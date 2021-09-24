@@ -1,1 +1,13 @@
-# a-website
+Vue.component(‘orders’, { props: [‘limit’], data: function(){  return {   articles: null  } },
+created: function(){  var query = deliveryClient   .items()   .type('blog_post')   .elementsParameter(['link', 'title', 'image_url', 'image', 'teaser'])   .orderParameter('elements.published', SortOrder.desc);   if (this.limit){   query = query.limitParameter(this.limit);  }  query   .getPromise()   .then(response =>    this.$data.articles = response.items.map(item => ({     url: item.link.value,     header: item.title.value,     image: item.image_url.value != '' ? item.image_url.value : item.image.assets[0].url,     teaser: item.teaser.value    }))   ); },
+template: `  <section class=”features”>   <article v-for=”article in articles”>    …   </article>  </section> ` });
+<template> HTML of the component</template><script> export default {  Vue.js code }</script>
+<template> <section class=”features”>  <article v-for=”article in blogPosts”>   …  </article> </section></template><script> export default {  props: [‘limit’],  computed: {   blogPosts: function(){    return this.$store.state.blogPosts && this.limit && this.$store.state.blogPosts.length > this.limit ? this.$store.state.blogPosts.slice(0, this.limit) : this.$store.state.blogPosts;   }  } }</script>
+<template> <section class="features">  <article v-for="article in blogPosts">   ...  </article> </section></template><script> export default {  props: ['limit'],  computed: {   blogPosts: function(){    return this.$store.state.blogPosts && this.limit && this.$store.state.blogPosts.length > this.limit ? this.$store.state.blogPosts.slice(0, this.limit) : this.$store.state.blogPosts;   }  } }</script>
+<template> <section class="features">  <article v-for="article in blogPosts">   ...  </article> </section></template><script> export default {  props: ['limit'],  computed: {   blogPosts: function(){    return this.$store.state.blogPosts && this.limit && this.$store.state.blogPosts.length > this.limit ? this.$store.state.blogPosts.slice(0, this.limit) : this.$store.state.blogPosts;   }  } }</script>
+Background-image: url(“~/assets/images/bg.jpg”);
+Import Vuex from ‘vuex’
+Const createStore = () => { return new Vuex.Store({  state: () => ({}),  mutations: {},  actions: {}, })}export default createStore
+…const createStore = () => { return new Vuex.Store({  state: () => ({   blogPosts: null  }),  mutations: {   setBlogPosts(state, blogPosts){    state.blogPosts = blogPosts;   }  },  actions: {   getBlogPosts (context) {    logic to get content from Kentico Cloud   }  }, })}
+<article v-for=”article in $store.state.blogPosts”> …</article>
+
